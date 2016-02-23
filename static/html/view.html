@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{app.title}}</title>
+    <link href="css/app.less" rel="stylesheet/less" type="text/css"/>
+    <!-- GENERAL LIBRARY  -->
+    <script src="js/lib/less.min.js" type="text/javascript"></script>
+    <script src="js/lib/jquery-2.0.3.min.js" type="text/javascript"></script>
+    <script src="js/lib/underscore-min.js"></script>
+    <!-- VESPY LIBRARY  -->
+    <script src="js/vespy.js" type="text/javascript"></script>
+    <script src="js/page.js" type="text/javascript"></script>
+    <script src="js/utils.js" type="text/javascript"></script>
+    <script src="js/node.js" type="text/javascript"></script>
+    <script src="js/planner.js" type="text/javascript"></script>
+    <script src="js/template.js" type="text/javascript"></script>
+    <script src="js/datatable.js" type="text/javascript"></script>
+    <!---->
+    <script language="javascript" type="text/javascript">
+        PAGE_URL = "{{url}}";
+        if (typeof Vespy == 'undefined') Vespy={};
+        (function($) {
+            $(document).ready(function() {
+                Vespy.request_app_data(Vespy.initialize_runtime);
+            });
+        })(jQuery);
+    </script>
+</head>
+<body id='view'>
+<div id='template_wrapper'>
+    <div id='template'>
+
+    </div>
+</div>
+</body>
+</html>
+
+
+

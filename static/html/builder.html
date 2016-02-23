@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VESPY Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="css/app.css" rel="stylesheet" type="text/css"/>
+    <!-- EXTERNAL LIBRARY -->
+    <script src="js/lib/jquery-2.0.3.min.js" type="text/javascript"></script>
+    <script src="js/lib/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="js/lib/underscore-min.js"></script>
+    <script src="js/lib/async.js" type="text/javascript"></script>
+    <script src="js/lib/ace-code-editor/ace.js" type="text/javascript" charset="utf-8"></script>
+    <!-- MAIN JS CODE -->
+    <script src="js/vespy.js" type="text/javascript"></script>
+    <script src="js/page.js" type="text/javascript"></script>
+    <script src="js/utils.js" type="text/javascript"></script>
+    <script src="js/node.js" type="text/javascript"></script>
+    <script src="js/toolbox.js" type="text/javascript"></script>
+    <script src="js/commandUI.js" type="text/javascript"></script>
+    <script src="js/planner.js" type="text/javascript"></script>
+    <script src="js/selectionBox.js" type="text/javascript"></script>
+    <script src="js/dataUI.js" type="text/javascript"></script>
+    <script src="js/inspector.js" type="text/javascript"></script>
+    <script src="js/grid.js" type="text/javascript"></script>
+    <script src="js/template.js" type="text/javascript"></script>
+    <script src="js/datatable.js" type="text/javascript"></script>
+    <script>
+(function($) {
+    $(document).ready(function() {
+        Vespy.request_app_data(Vespy.initialize_builder);
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        // EVENT HANDLERS
+        $("div.pages").on("click","li.page_link",function(){
+            // Create components
+            Vespy.page = Vespy.get_page_by_id(Vespy.pages, $(this).attr("page-id"));
+            Vespy.grid = new Vespy.Grid($("#grid"), Vespy.page);
+            // Draw things
+            Vespy.page.template.set_target("#template");
+            Vespy.page.template.draw();
+            Vespy.grid.draw();
+            // Update top bar
+            $("#top_bar .page_title").text(Vespy.page.title);
+            $("#top_bar .page_url").text("/" + Vespy.page.url);
+        });
+        $("div.datatables").on("click","li.datatable_link",function(){
+            // Show datatable details
+            var dt_id = $(this).attr("dt-id");;
+            var table = Vespy.datatables.filter(function(dt){return dt['id']==dt_id;})[0];
+            table.draw($("#main_container"));
+        });
+        $("button.execute").click(function(){
+            Vespy.page.execute();
+        });
+        // SAVE APP DATA
+        $("button.save").click(function(){
+            Vespy.save();
+        });
+        // 
+        $("button#edit_template").click(function(){
+            Vespy.page.template.toggle_edit();    
+        });
+        // 
+        $("#floating_panel").draggable();
+    });
+
+})(jQuery);
+    </script>
+</head>
+<body>
+
+
+<div id='main_container'>
+    <div id='grid'></div>
+    <div id='template_wrapper'>
+        <div id='template_editor' class='hidden'></div>
+        <div id='template'></div>
+    </div>
+</div>
+
+<div id='top_bar'>
+    <div class='page_title'></div>
+    <div class='page_url'></div>
+</div>
+
+<div id='floating_panel'>
+    <div class='pages'>
+        PAGES
+        <ul class='page_link_list'>
+        {% for page in app.pages %} 
+            <li class='page_link' page-id="{{page.id}}">{{page.title}}</li>
+        {% endfor %}
+        </ul>
+        <div class='controls'>
+            [CONTROLS]
+        </div>
+    </div>
+
+    <div class='datatables'>
+        Data tables
+        <ul>
+        {% for dt in app.datatables %}
+            <li class='datatable_link' dt-id="{{dt.id}}">{{dt.title}}</li>
+        {% endfor %}
+        </ul>
+        <div class='controls'>
+            [CONTROLS]
+        </div>
+    </div>
+
+    <div class='editor'>
+        VESPY grid editor
+        <div class='controls'>
+            <button class='execute'>execute</button>
+            <button class='save'>save</button>
+            <button class='reset'>reset</button>
+        </div>
+        <div class='grid_ui'></div>
+    </div>
+    <button id='edit_template'>Edit template source</button>
+
+</div>
+
+<div id='commandUI'></div>
+
+
+
+
+
+
+</body>
+</html>
+
+
+
