@@ -41,7 +41,7 @@ Vespy.Toolbox = function(target_el, items) {
 					$(op_items[i]).css("opacity","1.0");
 					if(e.which == 13) $(op_items[i]).show();
 				}
-			}
+			} 
 		} else {
 			$(op_items).css("opacity","1.0").show();
 		}
